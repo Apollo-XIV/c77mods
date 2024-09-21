@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "c77"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+setuptools = "^74.1.2"
+pyyaml = "^6.0.2"
+rich = "^13.8.1"
+
+[tool.poetry.scripts]
+c77 = "c77:main"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

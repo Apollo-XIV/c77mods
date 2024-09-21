@@ -1,0 +1,16 @@
+archive-dir: /home/acrease/Documents/c77mods/archives
+# archive-dir: /home/acrease/Documents/c77mods/test
+game-dir: /home/acrease/.steam/steam/steamapps/common/Cyberpunk 2077
+# game-dir: /home/acrease/Documents/c77mods/test-game-dir
+save-file: state.pkl
+profiles:
+ default:
+    whitelist: "*"
+    # Default profile extracts all mods
+
+# PROFILE SCHEMA
+# default:
+#   whitelist: "regex"
+#   blacklist: "regex"
+#   include: ["filenames"]
+#   exclude: ["filenames"]
