@@ -21,7 +21,7 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description="Greet the user")
     parser.add_argument("action", help="enable debug logging")
     parser.add_argument("--debug", action="store_true", help="enable debug logging")
-    parser.add_argument("--profile", default="default", help="which profile to deploy")
+    parser.add_argument("--profile", default=None, help="which profile to deploy")
     args = parser.parse_args()
     if args.action not in ["list", "diff", "sync"]:
         print(f"[bold red]Error: Unknown command '{args.action}'")
@@ -39,7 +39,8 @@ def main():
 
     # load config settings
     config = load_config("./config.yaml")
-    config.active_profile = args.profile
+    if args.profile is not None:
+        config.active_profile = args.profile
     logger.info("Loaded config from file")
 
     # print config data
