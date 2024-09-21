@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import yaml
+import fnmatch
 from yaml import Loader as Loader
 from c77.logging import AppLogger
 
@@ -56,13 +57,30 @@ class Config:
     def profile(self):
         return self.profiles[self.active_profile]
 
-def filter_archives_by_profiles(archives: set[str], profile: Profile) -> set[str]:
+def filter_archives_by_config(archives: set[str], config: Config) -> set[str]:
+    output = []
+    logger = AppLogger(__name__).get_logger()
+    profile = config.profile
     # add all that match whitelist wildcarding
+    whitelisted = fnmatch.filter(archives, profile.whitelist)
+    logger.debug(f"Whitelisted Files: {whitelisted}")
+    output.extend(whitelisted)
 
     # remove all that match blacklist wildcards
+    blacklisted = fnmatch.filter(archives, profile.blacklist)
+    output = list(set(output) - set(blacklisted))
+    logger.debug(f"Blacklisted Files: {blacklisted}")
 
     # re-add any include files
+    for file in profile.include:
+        if not os.path.exists(config.archive_dir + "/" + file):
+            raise OSError(f"{file} does not exist in {config.archive_dir}")
+        output.append(file)
 
     # re-remove any exclude files
+    for file in profile.exclude:
+        archive_path = config.archive_dir + "/" + file
+        if archive_path in output:
+            output.remove(archive_path)
 
-    pass
+    return set(output)

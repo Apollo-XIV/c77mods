@@ -11,7 +11,7 @@ from rich.prompt import Confirm
 from c77.zip import unzip_files, is_zip, list_archives,remove_files
 from c77.logging import AppLogger
 from c77.state import load_save_data, persist_save_data
-from c77.config import load_config
+from c77.config import load_config, filter_archives_by_config
 from c77.ui import create_header
 import logging
 
@@ -57,9 +57,9 @@ def main():
     archives = [a for a in list_archives(config.archive_dir)]
 
     # apply filters
-    # filtered_archives = filter_archive_by_profile(archives, config.profile)
+    filtered_archives = filter_archives_by_config(archives, config)
 
-    outputs = unzip_files(archives, config, dry_run=True)
+    outputs = unzip_files(filtered_archives, config, dry_run=True)
 
     # find diff between outputs
 
@@ -102,7 +102,7 @@ def main():
             remove_files(save_data[files])
 
         # add new files
-        outputs = unzip_files(to_generate, config)
+        outputs = unzip_files(filtered_archives, config)
         # save data to file
         persist_save_data(save_file, outputs)
 
