@@ -2,6 +2,7 @@ from dataclasses import dataclass
 import yaml
 import fnmatch
 from yaml import Loader as Loader
+import os
 from rich import print
 from c77.logging import AppLogger
 
@@ -78,7 +79,8 @@ def filter_archives_by_config(archives: set[str], config: Config) -> set[str]:
 
     # re-add any include files
     for file in profile.include:
-        if not os.path.exists(config.archive_dir + "/" + file):
+        file = config.archive_dir + "/" + file
+        if not os.path.exists(file):
             raise OSError(f"{file} does not exist in {config.archive_dir}")
         output.append(file)
 
@@ -88,4 +90,5 @@ def filter_archives_by_config(archives: set[str], config: Config) -> set[str]:
         if archive_path in output:
             output.remove(archive_path)
 
+    logger.debug(f"The following archives have been selected for deployment:\n{output}")
     return set(output)

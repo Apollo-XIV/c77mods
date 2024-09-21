@@ -7,6 +7,11 @@ profiles:
     whitelist: "*"
   zero:
     blacklist: "*"
+  include:
+    include: ["mod_settings.zip-4885-0-2-8-1710978150.zip"]
+  exclude:
+    whitelist: "*"
+    exclude: ["mod_settings.zip-4885-0-2-8-1710978150.zip"]
     # Default profile extracts all mods
 
 # PROFILE SCHEMA

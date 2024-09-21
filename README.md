@@ -37,6 +37,17 @@ profile-name:
   exclude: [] #
 ```
 
+## Limitations
+This is a very simple tool, and I honestly can't recommend it unless you're familiar with the manual install process and just want to automate it. The following important features are missing from this tool, and should be considered by the user:
+ - incorrectly packaged zip archives (i.e. archives that don't automatically extract to the correct subpath)
+ - non-zip archives such as 7z and rar
+ - file collisions after extraction
+
+There are plans to deal with these limitations, but they aren't implemented yet:
+ - zip repackaging tool
+ - add handlers for non-zip archives
+ - track individual files created when making diffs
+
 ## Example
 ```
       ___ _____ _____                    _

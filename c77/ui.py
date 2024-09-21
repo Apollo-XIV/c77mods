@@ -8,20 +8,30 @@ from importlib.metadata import version, metadata
 
 console = Console()
 
-def create_header(config):
+def create_header(config, small_header=False):
     # meta = metadata("c77")
     # Create a styled Text object with a header
     app_version = "v.0.0.1"
-    console.print(r"""[yellow]
-      ___ _____ _____                    _     
-     / __\___  |___  | __ ___   ___   __| |___ 
-    / /     / /   / / '_ ` _ \ / _ \ / _` / __|
-   / /___  / /   / /| | | | | | (_) | (_| \__ \
-   \____/ /_/   /_/ |_| |_| |_|\___/ \__,_|___/ [/]""" + f"[bold]{app_version}[/]")
-    width = console.size.width
+    if small_header:
+        console.print()
+        title = "◤c77mods◢"
+        template = "█"*(console.size.width - 25) + "[bold black on yellow]v.0.0.1[/]◤◢◤╱╱"
+        start = 2
+        end = min(len(template), len(title))
+        border = template[:start] + title + template[end:]
+        console.print("[yellow]"+border)
+        pass
+    else:
+        console.print(r"""[yellow]
+          ___ _____ _____                    _     
+         / __\___  |___  | __ ___   ___   __| |___ 
+        / /     / /   / / '_ ` _ \ / _ \ / _` / __|
+       / /___  / /   / /| | | | | | (_) | (_| \__ \
+       \____/ /_/   /_/ |_| |_| |_|\___/ \__,_|___/ [/]""" + f"[bold]{app_version}[/]")
+        width = console.size.width
 
-    # Print a line of forward slashes that matches the width of the terminal
-    console.print("\n"+"[yellow]"+"/" * width)
+        # Print a line of forward slashes that matches the width of the terminal
+        console.print("\n"+"[yellow]"+"/" * width)
 
     details_table = Table(
         show_header = False,

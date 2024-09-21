@@ -44,7 +44,7 @@ def main():
     logger.info("Loaded config from file")
 
     # print config data
-    create_header(config)
+    create_header(config, small_header=True)
 
     # load save data
     save_file = config.save_file
@@ -53,7 +53,7 @@ def main():
 
     if args.action == "list":
         print("   [bold]Deployed Mods:")
-        print('\n'.join([str("    - " + repr(x.name)) for x in save_data.keys()]))
+        print('\n'.join([str("    ► " + repr(x.name)) for x in save_data.keys()]))
         exit(0)
 
     # generate new output prediction
