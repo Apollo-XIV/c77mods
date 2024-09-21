@@ -1,6 +1,6 @@
 # C77mods
 *A Cyberpunk 2077 mod manager written in python*
-This is a simplistic mod manager written using python.
+This is a simplistic mod manager written using python. It mostly works by unzipping the files in the archive directory into the cyberpunk directory and tracking what changes were made. On subsequent deployments it finds the differences between them and then synchronises on user approval.
 
 ## Usage
 
