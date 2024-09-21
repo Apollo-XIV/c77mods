@@ -1,5 +1,5 @@
 {
-  description = "Application packaged using poetry2nix";
+  description = "Cyberpunk 2077 Mod Manager written in python";
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
@@ -58,5 +58,4 @@
         };
       });
 }
-#
 #

@@ -55,3 +55,14 @@ class Config:
     @property
     def profile(self):
         return self.profiles[self.active_profile]
+
+def filter_archives_by_profiles(archives: set[str], profile: Profile) -> set[str]:
+    # add all that match whitelist wildcarding
+
+    # remove all that match blacklist wildcards
+
+    # re-add any include files
+
+    # re-remove any exclude files
+
+    pass

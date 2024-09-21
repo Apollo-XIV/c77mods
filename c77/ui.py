@@ -11,7 +11,7 @@ console = Console()
 def create_header(config):
     # meta = metadata("c77")
     # Create a styled Text object with a header
-    app_version = version('c77')
+    app_version = "v.0.0.1"
     console.print(r"""[yellow]
       ___ _____ _____                    _     
      / __\___  |___  | __ ___   ___   __| |___ 
@@ -32,9 +32,9 @@ def create_header(config):
     details_table.add_column("key", min_width=15, no_wrap=True)
     details_table.add_column("value", justify="left", no_wrap=True)
     details_table.add_row("active profile", config.active_profile)
-    details_table.add_row("save file", config.save_file)
-    details_table.add_row("archive dir", config.archive_dir)
-    details_table.add_row("game dir", config.game_dir)
+    details_table.add_row("save file", repr(config.save_file))
+    details_table.add_row("archive dir", repr(config.archive_dir))
+    details_table.add_row("game dir", repr(config.game_dir))
 
     # Create a panel around the details table with additional styling
     header_panel = Panel(
