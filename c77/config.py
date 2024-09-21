@@ -2,6 +2,7 @@ from dataclasses import dataclass
 import yaml
 import fnmatch
 from yaml import Loader as Loader
+from rich import print
 from c77.logging import AppLogger
 
 
@@ -55,7 +56,11 @@ class Config:
 
     @property
     def profile(self):
-        return self.profiles[self.active_profile]
+        try:
+            return self.profiles[self.active_profile]
+        except:
+            print(f"   [bold red]Could not find any profile '{self.active_profile}'")
+            exit(1)
 
 def filter_archives_by_config(archives: set[str], config: Config) -> set[str]:
     output = []

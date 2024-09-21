@@ -3,9 +3,10 @@ archive-dir: /home/acrease/Documents/c77mods/archives
 game-dir: /home/acrease/Documents/c77mods/test-game-dir
 save-file: state.pkl
 profiles:
- default:
-    whitelist: ""
-    blacklist: ""
+  default:
+    whitelist: "*"
+  zero:
+    blacklist: "*"
     # Default profile extracts all mods
 
 # PROFILE SCHEMA
