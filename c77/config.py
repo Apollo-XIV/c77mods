@@ -7,7 +7,7 @@ from rich import print
 from c77.logging import AppLogger
 
 
-def load_config(filepath):
+def load_config(filepath, profile_override=None):
     logger = AppLogger(__name__).get_logger()
     data = yaml.load(open(filepath, 'r').read(), Loader=Loader)
     # get required values, error if missing
@@ -30,13 +30,19 @@ def load_config(filepath):
         ) for k, p in data.get("profiles").items()
     }
 
+    active_profile = (
+        data.get("active-profile", "default") 
+        if profile_override is None 
+        else profile_override
+    )
+
     logger.debug(f"profiles: {profiles}")
 
     return Config(
         game_dir = game_dir,
         archive_dir = archive_dir,
         save_file = data.get("save-file", "state.pkl"),
-        active_profile = data.get("active-profile", "default"),
+        active_profile = active_profile,
         profiles = profiles
     )
 

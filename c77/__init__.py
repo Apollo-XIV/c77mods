@@ -107,7 +107,9 @@ def main():
         # add new files
         outputs = unzip_files(filtered_archives, config)
         # save data to file
+        # need to merge old save data with changes when doing surgical diffs
         persist_save_data(save_file, outputs)
+    print("")
 
 if __name__ == "__main__":
     main()
