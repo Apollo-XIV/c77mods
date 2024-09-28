@@ -12,7 +12,7 @@ def is_zip(filename: str) -> bool:
 
 def list_archives(archive_path: str) -> set[str]:
     logger = AppLogger().get_logger()
-    out = set([archive_path + "/" + a for a in os.listdir(archive_path) if is_zip(a)])
+    out = set([Path(archive_path + "/" + a) for a in os.listdir(archive_path) if is_zip(a)])
     logger.debug(f"Found the following archives: {out}")
     return out
 

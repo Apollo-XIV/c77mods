@@ -1,11 +1,12 @@
 archive-dir: /home/acrease/Documents/c77mods/archives
 # game-dir: /home/acrease/.steam/steam/steamapps/common/Cyberpunk 2077
-game-dir: /home/acrease/Documents/c77mods/test-game-dir
+game-dir: /home/acrease/Documents/c77mods/test-dir
 save-file: save.pkl
 profiles:
   default:
     whitelist: "*"
   zero:
+    whitelist: ""
     blacklist: "*"
   include:
     blacklist: "*"

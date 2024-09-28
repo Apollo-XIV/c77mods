@@ -17,10 +17,9 @@ def main():
         game_binding.list_deployed_mods()
     elif args.action == "diff":
         diff = game_binding.diff(config)
-        print(diff)
         # generate_diff(game_binding) # returns a list of actions to execute
     elif args.action == "sync":
-        pass
+        game_binding.sync(config)
         # game_binding.sync()
     
 

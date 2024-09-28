@@ -3,3 +3,5 @@ archives
 __pycache__
 dist
 state.pkl
+test-game-dir
+logs

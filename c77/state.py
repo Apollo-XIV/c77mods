@@ -2,13 +2,15 @@ import pickle
 import copy
 import os 
 import logging
+from pathlib import Path
 import traceback
 from dataclasses import dataclass, field
+import json
+from result import Ok, do
 from typing import Callable
-from c77.utils import try_wrap
+from c77.utils import try_wrap, debug
 from c77.models import Mod
 from c77.logging import AppLogger
-
 
 def load_save_data(file_path: str) -> dict:
     logger = AppLogger(__name__).get_logger()
@@ -33,7 +35,7 @@ def persist_save_data(file_path:str, data: dict) -> None:
 
 def list_archives(archive_path: str) -> list[str]:
     logger = AppLogger().get_logger()
-    all_files = [archive_path + "/" + a for a in os.listdir(archive_path)]
+    all_files = [Path(archive_path + "/" + a) for a in os.listdir(archive_path)]
     out = [Mod(source=f_path) for f_path in all_files]
     logger.debug(f"Found the following archives: {out}")
     return out
@@ -41,7 +43,7 @@ def list_archives(archive_path: str) -> list[str]:
 @dataclass
 class SaveData:
     deployed_to: str
-    state: list[str, Mod] = field(default_factory=list)
+    state: list[str | Path, Mod] = field(default_factory=list)
 
     @classmethod
     def load_state(cls, save_file) -> 'SaveData':
@@ -49,20 +51,21 @@ class SaveData:
 
         if not os.path.exists(save_file):
             logger.info("Save file doesn't exist, blank slate")
-            return SaveData(
+            save_data = SaveData(
                 deployed_to = "",
-                state = {}
+                state = []
             )
-
-        with open(save_file, 'rb') as file:
-            save_data = pickle.load(file)
-            if (
-                not isinstance(save_data, SaveData)
-                or not isinstance(save_data.deployed_to, str)
-                or not isinstance(save_data.state, list[str, Mod])
-            ):
-                raise ValueError("Save file is corrupted")
+        else:
+            with open(save_file, 'rb') as file:
+                save_data = pickle.load(file)
+                if (
+                    not isinstance(save_data, SaveData)
+                    or not isinstance(save_data.deployed_to, str)
+                    or not isinstance(save_data.state, list)
+                ):
+                    raise ValueError("Save file is corrupted")
         
+        logger.info(f"Loaded the following from {file}:\n{save_data}")
         return save_data
 
     @classmethod
@@ -89,18 +92,53 @@ class SaveData:
             returns a dicitonary that links the mods in the output with the functions to execute to create it
         """
         output = {}
+        log = AppLogger(__name__).get_logger()
+           
         old_state = copy.deepcopy(self)
         new_state = copy.deepcopy(o)
-        print(old_state)
-        print(new_state)
+
+        new_mods = [mod.source for mod in new_state.state]
+        old_mods = [mod.source for mod in old_state.state]
+
         for mod in old_state.state:
-            # find mod in new state
-            result = try_wrap([new_mod.source for new_mod in o.state].index, "Mod should be deleted", mod.source)
-            print(result)
-            # if can't be found, or deployed_to is different, add uninstalled state to diff and removal actions
-            # if state is different, remediate
+            # if its installed check following
+            if mod.state == "installed":
+                # check if uninstalled or not present in result
+                new_mod_state = do(
+                    Ok(new_mod_state)
+                    for mod_index in try_wrap(new_mods.index, "", mod.source)
+                    for new_mod in Ok(new_state.state[mod_index])
+                    for new_mod_state in Ok(new_mod.state)
+                ).unwrap_or("uninstalled")
 
-        # for the remaining new_state mods, add install methods to output
+                if new_mod_state != "installed" or old_state.deployed_to != new_state.deployed_to:
+                    log.debug(f"Adding remove instructions for {mod.source}")
+                    # add remove instructions
+                    instr_list = output.get(mod.source, [])
+                    instr_list.append(mod.make_uninstall(old_state.deployed_to))
+                    output[mod.source] = instr_list
 
-        
+                else:
+                    log.debug(f"Mod is already installed: {mod.source}")
+
+        for mod in new_state.state:
+            # only run for mods that are meant to be installed
+            if mod.state == "installed":
+                old_mod_state = do(
+                    Ok(old_mod_state_filtered)
+                    for mod_index in try_wrap(old_mods.index, "", mod.source)
+                    for old_mod in Ok(old_state.state[mod_index])
+                    for old_mod_state in Ok(old_mod.state)
+                    for old_mod_state_filtered in (Ok(old_mod_state) if old_state.deployed_to == new_state.deployed_to else Ok("uninstalled"))
+                ).unwrap_or("uninstalled")
+
+                if old_mod_state == "installed":
+                    continue
+
+                log.debug(f"Adding install instructions for {mod.source}")
+                instr_list = output.get(mod.source, [])
+                instr_list.append(mod.make_install(new_state.deployed_to))
+                output[mod.source] = instr_list
+                    
+        return output
 
