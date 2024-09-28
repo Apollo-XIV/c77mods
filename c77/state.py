@@ -2,6 +2,7 @@ import pickle
 import copy
 import os 
 import logging
+from rich import print
 from pathlib import Path
 import traceback
 from dataclasses import dataclass, field
@@ -63,9 +64,11 @@ class SaveData:
                     or not isinstance(save_data.deployed_to, str)
                     or not isinstance(save_data.state, list)
                 ):
-                    raise ValueError("Save file is corrupted")
+                    print("[black on red]ERROR[/] Save file is corrupted")
+                    logger.debug(f"Got {save_data}")
+                    exit(1)
         
-        logger.info(f"Loaded the following from {file}:\n{save_data}")
+        logger.info(f"Loaded the following from {save_file}:\n{save_data}")
         return save_data
 
     @classmethod

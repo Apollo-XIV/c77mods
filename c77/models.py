@@ -26,7 +26,7 @@ class Mod:
             desired_state = "uninstalled"
 
         # re-add any include files
-        if self.source in profile.include:
+        if self.source.name in profile.include:
             desired_state = "installed"
 
         if self.source in profile.exclude:

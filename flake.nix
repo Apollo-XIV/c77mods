@@ -18,9 +18,6 @@
         inherit (poetry2nix.lib.mkPoetry2Nix { inherit pkgs; }) mkPoetryApplication mkPoetryEnv;
         myEnv = mkPoetryEnv {
           projectDir = ./.;
-          extraPackages = ps: [
-            pkgs.python312Packages.setuptools
-          ];
         };
       in
       {

@@ -22,16 +22,31 @@ def create_header(config, small_header=False):
         console.print("[yellow]"+border)
         pass
     else:
+#         console.print(r"""[yellow]
+#           ___ _____ _____                    _     
+#          ╱ __\___  |___  | __ ___   ___   __| |___ 
+#         ╱ ╱     ╱ ╱   ╱ ╱ '_ ` _ \ ╱ _ \ ╱ _` ╱ __|
+# [black on yellow]       / /___  / /   / ╱| | | | | | (_) | (_| \__ \ [/][bold black on yellow]v.0.0.1[/]◤◢◤╱╱
+#        \____╱ ╱_╱   ╱_╱ |_| |_| |_|\___╱ \__,_|___╱ [/]""")
+#         width = console.size.width
+
         console.print(r"""[yellow]
-          ___ _____ _____                    _     
-         / __\___  |___  | __ ___   ___   __| |___ 
-        / /     / /   / / '_ ` _ \ / _ \ / _` / __|
-       / /___  / /   / /| | | | | | (_) | (_| \__ \
-       \____/ /_/   /_/ |_| |_| |_|\___/ \__,_|___/ [/]""" + f"[bold]{app_version}[/]")
+                                                            ,,          
+                                                          `7MM          
+                                                            MM          
+ ,p6"bo M******A'M******A'`7MMpMMMb.pMMMb.  ,pW"Wq.    ,M""bMM  ,pP"Ybd 
+6M'  OO Y     A' Y     A'   MM    MM    MM 6W'   `Wb ,AP    MM  8I   `" 
+8M           A'       A'    MM    MM    MM 8M     M8 8MI    MM  `YMMMa. 
+YM.    ,    A'       A'     MM    MM    MM YA.   ,A9 `Mb    MM  L.   I8 
+ YMbmd'    A'       A'    .JMML  JMML  JMML.`Ybmd9'   `Wbmd"MML.M9mmmP' 
+[black on yellow]          A'       A'                          [bold]v.0.1.0[/][/]◤◢◤╱╱
+         A'       A'                                                    
+        """)
+
         width = console.size.width
 
         # Print a line of forward slashes that matches the width of the terminal
-        console.print("\n"+"[yellow]"+"/" * width)
+        # console.print("\n"+"[yellow]"+"/" * width)
 
     details_table = Table(
         show_header = False,
